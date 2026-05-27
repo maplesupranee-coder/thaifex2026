@@ -52,11 +52,22 @@
         .form-row { display: flex; gap: 10px; }
         .form-row .form-col { flex: 1; }
         
-        .product-item-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-        .product-num { font-weight: bold; color: #64748b; width: 22px; font-size: 15px; text-align: center; }
-        .input-prod { flex: 2; min-width: 120px; }
-        .input-qty { flex: 1; max-width: 80px; }
-        .input-unit { flex: 1; max-width: 80px; }
+        /* ปรับสัดส่วนแถวสินค้าให้รองรับปุ่ม Attach ไฟล์ */
+        .product-item-row { display: flex; align-items: center; gap: 6px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .product-num { font-weight: bold; color: #64748b; width: 20px; font-size: 14px; text-align: center; }
+        .input-prod { flex: 2; min-width: 100px; }
+        .input-qty { flex: 1; max-width: 65px; }
+        .input-unit { flex: 1; max-width: 65px; }
+        
+        /* ดีไซน์ปุ่มคลิกแนบรูปภาพ */
+        .attach-label {
+            display: flex; align-items: center; justify-content: center;
+            background-color: #f1f5f9; border: 2px dashed #cbd5e1; color: #475569;
+            padding: 10px; border-radius: 8px; cursor: pointer; min-width: 45px; height: 48px;
+            font-size: 18px; transition: all 0.2s;
+        }
+        .attach-label.has-file { background-color: #dcfce7; border-color: #22c55e; color: #16a34a; }
+        .attach-label input { display: none; }
         
         .btn-block {
             width: 100%; background-color: #16a34a; color: white; padding: 16px; border: none; border-radius: 8px;
@@ -79,6 +90,12 @@
             border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: background 0.2s;
         }
         .btn-delete:hover { background-color: #b91c1c; }
+        
+        .btn-view-pic {
+            background-color: #3b82f6; color: white; text-decoration: none; padding: 4px 8px;
+            border-radius: 4px; font-size: 12px; font-weight: bold;
+        }
+        .btn-view-pic:hover { background-color: #1d4ed8; }
         
         .page-section { display: none; }
         .page-section.active { display: block; }
@@ -155,16 +172,25 @@
                 <div class="card">
                     <h2>2. รายการสินค้า จำนวน และหน่วย (สูงสุด 10 รายการ)</h2>
                     <div id="productFields">
-                        <div class="product-item-row"><span class="product-num">1</span><input type="text" name="prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required><input type="text" name="qty1" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน" required><input type="text" name="unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required></div>
-                        <div class="product-item-row"><span class="product-num">2</span><input type="text" name="prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" name="qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" name="unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"></div>
-                        <div class="product-item-row"><span class="product-num">3</span><input type="text" name="prod3" class="form-control input-prod"><input type="text" name="qty3" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit3" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">4</span><input type="text" name="prod4" class="form-control input-prod"><input type="text" name="qty4" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit4" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">5</span><input type="text" name="prod5" class="form-control input-prod"><input type="text" name="qty5" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit5" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">6</span><input type="text" name="prod6" class="form-control hooks-input input-prod"><input type="text" name="qty6" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit6" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">7</span><input type="text" name="prod7" class="form-control input-prod"><input type="text" name="qty7" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit7" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">8</span><input type="text" name="prod8" class="form-control input-prod"><input type="text" name="qty8" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit8" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">9</span><input type="text" name="prod9" class="form-control input-prod"><input type="text" name="qty9" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit9" class="form-control input-unit" style="text-align: center;"></div>
-                        <div class="product-item-row"><span class="product-num">10</span><input type="text" name="prod10" class="form-control input-prod"><input type="text" name="qty10" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit10" class="form-control input-unit" style="text-align: center;"></div>
+                        <!-- มีการเพิ่มป้ายแนบไฟล์รูป (attach-label) ไว้ที่ท้ายแถวกรอกสินค้าทุกข้อครับ -->
+                        <div class="product-item-row">
+                            <span class="product-num">1</span>
+                            <input type="text" name="prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required>
+                            <input type="text" name="qty1" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน" required>
+                            <input type="text" name="unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required>
+                            <label class="attach-label" id="lblFile1">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 1)"></label>
+                            <!-- อินพุตซ่อนสำหรับแปลงรูปเป็น Base64 ส่งไปหลังบ้าน -->
+                            <input type="hidden" id="fileData1" name="fileData1"><input type="hidden" id="fileName1" name="fileName1"><input type="hidden" id="fileType1" name="fileType1">
+                        </div>
+                        <div class="product-item-row"><span class="product-num">2</span><input type="text" name="prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" name="qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" name="unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"><label class="attach-label" id="lblFile2">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 2)"></label><input type="hidden" id="fileData2" name="fileData2"><input type="hidden" id="fileName2" name="fileName2"><input type="hidden" id="fileType2" name="fileType2"></div>
+                        <div class="product-item-row"><span class="product-num">3</span><input type="text" name="prod3" class="form-control input-prod"><input type="text" name="qty3" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit3" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile3">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 3)"></label><input type="hidden" id="fileData3" name="fileData3"><input type="hidden" id="fileName3" name="fileName3"><input type="hidden" id="fileType3" name="fileType3"></div>
+                        <div class="product-item-row"><span class="product-num">4</span><input type="text" name="prod4" class="form-control input-prod"><input type="text" name="qty4" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit4" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile4">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 4)"></label><input type="hidden" id="fileData4" name="fileData4"><input type="hidden" id="fileName4" name="fileName4"><input type="hidden" id="fileType4" name="fileType4"></div>
+                        <div class="product-item-row"><span class="product-num">5</span><input type="text" name="prod5" class="form-control input-prod"><input type="text" name="qty5" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit5" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile5">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 5)"></label><input type="hidden" id="fileData5" name="fileData5"><input type="hidden" id="fileName5" name="fileName5"><input type="hidden" id="fileType5" name="fileType5"></div>
+                        <div class="product-item-row"><span class="product-num">6</span><input type="text" name="prod6" class="form-control input-prod"><input type="text" name="qty6" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit6" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile6">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 6)"></label><input type="hidden" id="fileData6" name="fileData6"><input type="hidden" id="fileName6" name="fileName6"><input type="hidden" id="fileType6" name="fileType6"></div>
+                        <div class="product-item-row"><span class="product-num">7</span><input type="text" name="prod7" class="form-control input-prod"><input type="text" name="qty7" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit7" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile7">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 7)"></label><input type="hidden" id="fileData7" name="fileData7"><input type="hidden" id="fileName7" name="fileName7"><input type="hidden" id="fileType7" name="fileType7"></div>
+                        <div class="product-item-row"><span class="product-num">8</span><input type="text" name="prod8" class="form-control input-prod"><input type="text" name="qty8" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit8" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile8">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 8)"></label><input type="hidden" id="fileData8" name="fileData8"><input type="hidden" id="fileName8" name="fileName8"><input type="hidden" id="fileType8" name="fileType8"></div>
+                        <div class="product-item-row"><span class="product-num">9</span><input type="text" name="prod9" class="form-control input-prod"><input type="text" name="qty9" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit9" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile9">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 9)"></label><input type="hidden" id="fileData9" name="fileData9"><input type="hidden" id="fileName9" name="fileName9"><input type="hidden" id="fileType9" name="fileType9"></div>
+                        <div class="product-item-row"><span class="product-num">10</span><input type="text" name="prod10" class="form-control input-prod"><input type="text" name="qty10" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit10" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile10">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 10)"></label><input type="hidden" id="fileData10" name="fileData10"><input type="hidden" id="fileName10" name="fileName10"><input type="hidden" id="fileType10" name="fileType10"></div>
                     </div>
                     <button type="submit" class="btn-block" id="submitBtn">บันทึกข้อมูลและส่งแจ้งหน้างาน</button>
                 </div>
@@ -192,12 +218,13 @@
                                 <th>ชื่อสินค้า</th>
                                 <th>จำนวน</th>
                                 <th>หน่วย</th>
+                                <th>รูปถ่าย</th> <!-- เพิ่มคอลัมน์กดดูรูปในหน้าตาราง -->
                                 <th>จัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="reportData">
                             <tr>
-                                <td colspan="10" class="loading-text">⏳ กำลังโหลดข้อมูลสดจากคลังสินค้า...</td>
+                                <td colspan="11" class="loading-text">⏳ กำลังโหลดข้อมูลสดจากคลังสินค้า...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -207,9 +234,29 @@
     </div>
 
     <script>
-        // อัปเดตลิงก์สคริปต์ Web App URL เป็นเวอร์ชันล่าสุดของพี่เรียบร้อยครับ
+        // ใช้เป็นลิงก์ Apps Script ของพี่ตามเดิมได้เลยครับป๋ม
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx9-bPxCLpXWaTj0mqfYDnk3eExZ698INywYWH36CJOh2VM_lfabbEqL60WmuEAOi0T1Q/exec"; 
         let rawReportData = [];
+
+        // ฟังก์ชันจัดการตอนคนกดเลือกรูปภาพถ่ายสินค้า
+        function handleFileSelected(input, id) {
+            const file = input.files[0];
+            const label = document.getElementById(`lblFile${id}`);
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(`fileData${id}`).value = e.target.result;
+                    document.getElementById(`fileName${id}`).value = file.name;
+                    document.getElementById(`fileType${id}`).value = file.type;
+                    
+                    // เปลี่ยนปุ่มเป็นสีเขียว เพื่อให้หน้างานรู้ว่าอัปรูปติดแล้ว
+                    label.classList.add('has-file');
+                    label.innerHTML = '✓';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
 
         function setTransactionType(type) {
             document.getElementById('transactionType').value = type;
@@ -250,7 +297,7 @@
         function fetchReportData() {
             const tbody = document.getElementById('reportData');
             const exportBtn = document.getElementById('exportBtn');
-            tbody.innerHTML = '<tr><td colspan="10" class="loading-text">⏳ กำลังดึงข้อมูลล่าสุด...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="loading-text">⏳ กำลังดึงข้อมูลล่าสุด...</td></tr>';
             exportBtn.disabled = true;
             
             const oldScript = document.getElementById('jsonpScript');
@@ -258,7 +305,7 @@
             
             window.handleLogData = function(data) {
                 if(!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="10" class="loading-text">ยังไม่มีข้อมูลในคลังสินค้าในขณะนี้</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="11" class="loading-text">ยังไม่มีข้อมูลในคลังสินค้าในขณะนี้</td></tr>';
                     rawReportData = [];
                     return;
                 }
@@ -275,6 +322,12 @@
                     const typeBadge = isWithdraw ? 'badge-withdraw' : 'badge-deposit';
                     const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
                     const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
+                    
+                    // ตรวจสอบว่าในแถวนั้นมีรูปถ่ายส่งเข้ามาหรือไม่
+                    let picColumn = '<span style="color:#94a3b8;">ไม่มีรูป</span>';
+                    if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.startsWith("http")) {
+                        picColumn = `<a href="${row.fileUrl}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
+                    }
 
                     html += `<tr>
                         <td>${row.date || '-'}</td>
@@ -286,6 +339,7 @@
                         <td style="font-weight: 500; color:#0f172a;">${row.prodName || '-'}</td>
                         <td style="text-align: center; font-weight: bold; ${qtyColor}">${displayQty}</td>
                         <td style="text-align: center; color: #64748b;">${row.prodUnit || '-'}</td>
+                        <td style="text-align: center;">${picColumn}</td> <!-- ช่องกดลิงก์ดูรูปภาพ -->
                         <td>
                             <button class="btn-delete" onclick="deleteRowData(${i}, '${row.prodName}')">❌ ลบ</button>
                         </td>
@@ -306,7 +360,7 @@
             }
             
             const tbody = document.getElementById('reportData');
-            tbody.innerHTML = '<tr><td colspan="10" class="loading-text">⏳ กำลังดำเนินการลบข้อมูลใน Sheet...</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="11" class="loading-text">⏳ กำลังดำเนินการลบข้อมูลใน Sheet...</td></tr>';
             
             const searchParams = new URLSearchParams();
             searchParams.append("action", "delete");
@@ -335,7 +389,7 @@
             }
             
             const excelRows = [
-                ["วันที่ทำรายการ", "เวลาทำรายการ", "ประเภทรายการ", "ชื่อบริษัท / ซัพพลายเออร์", "ชื่อผู้ติดต่อ", "เบอร์โทรติดต่อหน้างาน", "ชื่อสินค้า", "จำนวนสินค้า", "หน่วยนับ"]
+                ["วันที่ทำรายการ", "เวลาทำรายการ", "ประเภทรายการ", "ชื่อบริษัท / ซัพพลายเออร์", "ชื่อผู้ติดต่อ", "เบอร์โทรติดต่อหน้างาน", "ชื่อสินค้า", "จำนวนสินค้า", "หน่วยนับ", "ลิงก์รูปถ่ายสินค้า"]
             ];
             
             for (let i = rawReportData.length - 1; i >= 0; i--) {
@@ -352,7 +406,8 @@
                     item.phone || '',
                     item.prodName || '',
                     isWithdraw ? -finalQty : finalQty,
-                    item.prodUnit || '-'
+                    item.prodUnit || '-',
+                    item.fileUrl || '-' // เพิ่มลิงก์รูปภาพลงในไฟล์รายงาน Excel 
                 ]);
             }
             
@@ -360,11 +415,10 @@
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             
             ws['!cols'] = [
-                {wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}
+                {wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}
             ];
             
             XLSX.utils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
-            
             const d = new Date();
             const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
             
@@ -390,7 +444,7 @@
             const currentType = document.getElementById('transactionType').value;
             
             btn.disabled = true;
-            btn.innerText = "⏳ กำลังบันทึกข้อมูลออนไลน์...";
+            btn.innerText = "⏳ กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ...";
             setDateTime();
             
             const formData = new FormData(this);
@@ -406,15 +460,24 @@
             })
             .then(res => res.json())
             .then(data => {
-                alert(`✅ บันทึกข้อมูล ${currentType} เรียบร้อยแล้ว!`);
+                alert(`✅ บันทึกข้อมูลและอัปโหลดรูป ${currentType} สำเร็จ!`);
                 this.reset();
+                // รีเซ็ตปุ่มคลิกแนบรูปให้กลับมาโชว์ 📎 เหมือนเดิม
+                for(let k=1; k<=10; k++){
+                   const lbl = document.getElementById(`lblFile${k}`);
+                   if(lbl) { lbl.classList.remove('has-file'); lbl.innerHTML = '📎<input type="file" accept="image/*" onchange="handleFileSelected(this, '+k+')">'; }
+                }
                 setTransactionType('ฝากสินค้า');
                 setDateTime();
                 btn.disabled = false;
             })
             .catch(err => {
-                alert(`✅ บันทึกข้อมูล ${currentType} หน้างานเรียบร้อย!`);
+                alert(`✅ ดำเนินการส่งข้อมูล ${currentType} เรียบร้อย!`);
                 this.reset();
+                for(let k=1; k<=10; k++){
+                   const lbl = document.getElementById(`lblFile${k}`);
+                   if(lbl) { lbl.classList.remove('has-file'); lbl.innerHTML = '📎<input type="file" accept="image/*" onchange="handleFileSelected(this, '+k+')">'; }
+                }
                 setTransactionType('ฝากสินค้า');
                 setDateTime();
                 btn.disabled = false;
