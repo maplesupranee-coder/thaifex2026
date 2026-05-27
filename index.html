@@ -2,326 +2,122 @@
 <html lang="th">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบฝาก-เบิกสินค้า THAIFEX 2026</title>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบบันทึกสต็อกสินค้า</title>
     <style>
-        *, *::before, *::after { box-sizing: border-box; }
-        body {
-            margin: 0; padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f1f5f9; color: #0f172a;
-            font-size: 16px; line-height: 1.5;
-        }
-        .container { width: 100%; padding: 12px; max-width: 600px; margin: 0 auto; }
-        .header-banner {
-            background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white;
-            padding: 18px 15px; border-radius: 12px; margin-bottom: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); text-align: center;
-        }
-        .header-banner h1 { margin: 0; font-size: 22px; font-weight: 700; }
-        .header-banner p { margin: 6px 0 0 0; font-size: 14px; opacity: 0.9; }
-        
-        .tab-group { display: flex; background-color: #e2e8f0; padding: 4px; border-radius: 8px; margin-bottom: 16px; }
-        .tab-btn {
-            flex: 1; padding: 12px 8px; text-align: center; background: none; border: none;
-            font-size: 15px; font-weight: bold; color: #475569; cursor: pointer; border-radius: 6px;
-        }
-        .tab-btn.active { background-color: white; color: #1e3a8a; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
-        
-        .type-selector-group { display: flex; gap: 8px; margin-bottom: 16px; }
-        .type-btn {
-            flex: 1; padding: 12px; text-align: center; font-size: 15px; font-weight: bold;
-            border: 2px solid #cbd5e1; border-radius: 8px; cursor: pointer; background-color: white; transition: all 0.2s;
-        }
-        .type-btn.deposit.active { background-color: #eff6ff; color: #2563eb; border-color: #3b82f6; }
-        .type-btn.withdraw.active { background-color: #fef2f2; color: #dc2626; border-color: #ef4444; }
-
-        .card {
-            background-color: white; border-radius: 12px; padding: 16px;
-            margin-bottom: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;
-        }
-        .card h2 { margin-top: 0; margin-bottom: 16px; font-size: 18px; color: #1e3a8a; border-left: 5px solid #3b82f6; padding-left: 10px; }
-        .form-group { margin-bottom: 16px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 15px; color: #334155; }
-        .form-control {
-            width: 100%; padding: 12px 14px; border: 2px solid #cbd5e1;
-            border-radius: 8px; font-size: 16px; background-color: #fff; color: #0f172a;
-        }
-        .form-control:focus { border-color: #3b82f6; outline: none; }
-        .form-row { display: flex; gap: 10px; }
-        .form-row .form-col { flex: 1; }
-        
-        .product-item-row { display: flex; align-items: center; gap: 6px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
-        .product-num { font-weight: bold; color: #64748b; width: 20px; font-size: 14px; text-align: center; }
-        .input-prod { flex: 2; min-width: 100px; }
-        .input-qty { flex: 1; max-width: 65px; }
-        .input-unit { flex: 1; max-width: 65px; }
-        
-        .attach-label {
-            display: flex; align-items: center; justify-content: center;
-            background-color: #f1f5f9; border: 2px dashed #cbd5e1; color: #475569;
-            padding: 10px; border-radius: 8px; cursor: pointer; min-width: 45px; height: 48px;
-            font-size: 18px; transition: all 0.2s;
-        }
-        .attach-label.has-file { background-color: #dcfce7; border-color: #22c55e; color: #16a34a; }
-        .attach-label input { display: none; }
-        
-        .btn-block {
-            width: 100%; background-color: #16a34a; color: white; padding: 16px; border: none; border-radius: 8px;
-            font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; box-shadow: 0 4px 6px rgba(22, 163, 74, 0.2);
-        }
-        .btn-block.withdraw-theme { background-color: #dc2626; box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2); }
-        .btn-block:disabled { background-color: #94a3b8; cursor: not-allowed; box-shadow: none; }
-        
-        .btn-excel {
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            background-color: #107c41; color: white; padding: 10px 16px; border: none; border-radius: 6px;
-            font-size: 14px; font-weight: bold; cursor: pointer; margin-bottom: 12px;
-            transition: background-color 0.2s; box-shadow: 0 2px 4px rgba(16, 124, 65, 0.2);
-        }
-        .btn-excel:hover { background-color: #0e6c38; }
-        .btn-excel:disabled { background-color: #94a3b8; cursor: not-allowed; box-shadow: none; }
-        
-        .btn-delete {
-            background-color: #ef4444; color: white; border: none; padding: 6px 10px;
-            border-radius: 6px; font-size: 12px; font-weight: bold; cursor: pointer; transition: background 0.2s;
-        }
-        .btn-delete:hover { background-color: #b91c1c; }
-        
-        .btn-view-pic {
-            background-color: #3b82f6; color: white; text-decoration: none; padding: 4px 8px;
-            border-radius: 4px; font-size: 12px; font-weight: bold;
-        }
-        .btn-view-pic:hover { background-color: #1d4ed8; }
-        
-        .page-section { display: none; }
-        .page-section.active { display: block; }
-        
-        .table-responsive { width: 100%; overflow-x: auto; margin-top: 10px; border-radius: 8px; border: 1px solid #e2e8f0; }
-        .report-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; background: white; }
-        .report-table th { background-color: #1e3a8a; color: white; padding: 10px; font-weight: 600; white-space: nowrap; }
-        .report-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; color: #334155; white-space: nowrap; }
-        .report-table tr:nth-child(even) { background-color: #f8fafc; }
-        .loading-text { text-align: center; color: #64748b; padding: 20px; font-size: 15px; }
-
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
-        .badge-deposit { background-color: #dcfce7; color: #16a34a; }
-        .badge-withdraw { background-color: #fee2e2; color: #dc2626; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f5f7fa; color: #333; }
+        .container { max-width: 500px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2 { text-align: center; color: #2c3e50; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
+        input[type="file"] { display: none; }
+        .btn-upload { display: block; text-align: center; background-color: #34495e; color: white; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 10px; }
+        .btn-submit { width: 100%; background-color: #2ecc71; color: white; padding: 12px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s; }
+        .btn-submit:hover { background-color: #27ae60; }
+        #preview { width: 100%; max-height: 250px; object-fit: contain; display: none; margin-top: 10px; border-radius: 6px; border: 1px dashed #ccc; }
+        .loading { display: none; text-align: center; font-weight: bold; color: #3498db; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-banner">
-            <h1>THAIFEX 2026</h1>
-            <p>ระบบแจ้งฝาก-เบิกสินค้าออนไลน์ (Mobile Version)</p>
+<div class="container">
+    <h2>บันทึกสต็อกสินค้า</h2>
+    <form id="stockForm">
+        <div class="form-group">
+            <label for="productName">ชื่อสินค้า / รหัสสินค้า</label>
+            <input type="text" id="productName" required placeholder="กรุณากรอกชื่อหรือรหัสสินค้า">
+        </div>
+        
+        <div class="form-group">
+            <label for="quantity">จำนวน</label>
+            <input type="number" id="quantity" required placeholder="กรุณากรอกจำนวน">
         </div>
 
-        <div class="tab-group">
-            <button class="tab-btn active" onclick="switchPage('form-page', this)">📝 ลงทะเบียน ฝาก/เบิก</button>
-            <button class="tab-btn" onclick="switchPage('report-page', this)">📊 รายงานสถานะคลัง</button>
+        <div class="form-group">
+            <label>รูปภาพประกอบ</label>
+            <label for="imageFile" class="btn-upload">📸 กดถ่ายรูป หรือ เลือกรูปภาพ</label>
+            <input type="file" id="imageFile" accept="image/*" capture="environment">
+            <img id="preview" src="" alt="ตัวอย่างรูปภาพ">
         </div>
 
-        <div id="form-page" class="page-section active">
-            <form id="deliveryForm">
-                <div class="card">
-                    <h2>เลือกประเภทการทำรายการ</h2>
-                    <div class="type-selector-group">
-                        <button type="button" id="typeDeposit" class="type-btn deposit active" onclick="setTransactionType('ฝากสินค้า')">➕ แจ้งฝากสินค้า</button>
-                        <button type="button" id="typeWithdraw" class="type-btn withdraw" onclick="setTransactionType('ขอเบิกสินค้า')">➖ ขอเบิกสินค้า</button>
-                    </div>
-                    <input type="hidden" id="transactionType" name="type" value="ฝากสินค้า">
-                </div>
+        <button type="submit" class="btn-submit">📤 ส่งข้อมูลเข้า Google Sheet</button>
+        <div id="loadingText" class="loading">⏳ กำลังอัปโหลดรูปและบันทึกข้อมูล กรุณารอสักครู่...</div>
+    </form>
+</div>
 
-                <div class="card">
-                    <h2 id="sectionTitle1">1. ข้อมูลผู้แจ้งฝากสินค้า</h2>
-                    <div class="form-row">
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label>วันที่ทำรายการ</label>
-                                <input type="text" id="currentDate" name="date" class="form-control" readonly style="background-color: #e2e8f0; font-weight: bold;">
-                            </div>
-                        </div>
-                        <div class="form-col">
-                            <div class="form-group">
-                                <label>เวลาทำรายการ</label>
-                                <input type="text" id="currentTime" name="time" class="form-control" readonly style="background-color: #e2e8f0; font-weight: bold;">
-                            </div>
-                        </div>
-                    </div>
+<script>
+    // ⚠️ วางลิงก์ Web App URL ตัวจริงที่ก๊อปปี้มาจาก Google Apps Script ในเครื่องหมายคำพูดด้านล่างนี้ครับ
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzQlOgiDgXDpN206OykcTvnvDm3dykVorHvxJr5P1FHEp8_S6oQAYnMvOXlRi6oSm4SlA/exec"; 
 
-                    <div class="form-group">
-                        <label>ชื่อบริษัท / ซัพพลายเออร์</label>
-                        <input type="text" name="supplier" class="form-control" placeholder="พิมพ์ชื่อบริษัทซัพพลายเออร์" required>
-                    </div>
+    const imageFileInput = document.getElementById('imageFile');
+    const previewImg = document.getElementById('preview');
+    let base64ImageString = "";
 
-                    <div class="form-group">
-                        <label id="labelPerson">ชื่อผู้ประสานงาน / คนฝาก</label>
-                        <input type="text" name="depositor" class="form-control" placeholder="ชื่อ - นามสกุล" required>
-                    </div>
+    // เมื่อมีการเลือกรูปหรือถ่ายรูป ให้แปลงเป็น Base64 และแสดงตัวอย่างรูป
+    imageFileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                previewImg.src = event.target.result;
+                previewImg.style.display = 'block';
+                base64ImageString = event.target.result; // เก็บค่า Base64 ไว้ส่งไปหลังบ้าน
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 
-                    <div class="form-group">
-                        <label>เบอร์โทรติดต่อหน้างาน</label>
-                        <input type="tel" name="phone" class="form-control" placeholder="0XXXXXXXXX" required>
-                    </div>
-                </div>
+    // จังหวะกดปุ่มส่งฟอร์มข้อมูล
+    document.getElementById('stockForm').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-                <div class="card">
-                    <h2>2. รายการสินค้า จำนวน และหน่วย (สูงสุด 10 รายการ)</h2>
-                    <div id="productFields">
-                        <div class="product-item-row">
-                            <span class="product-num">1</span>
-                            <input type="text" name="prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required>
-                            <input type="text" name="qty1" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน" required>
-                            <input type="text" name="unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required>
-                            <label class="attach-label" id="lblFile1">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 1)"></label>
-                            <input type="hidden" id="fileData1" name="fileData1"><input type="hidden" id="fileName1" name="fileName1"><input type="hidden" id="fileType1" name="fileType1">
-                        </div>
-                        <div class="product-item-row"><span class="product-num">2</span><input type="text" name="prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" name="qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" name="unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"><label class="attach-label" id="lblFile2">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 2)"></label><input type="hidden" id="fileData2" name="fileData2"><input type="hidden" id="fileName2" name="fileName2"><input type="hidden" id="fileType2" name="fileType2"></div>
-                        <div class="product-item-row"><span class="product-num">3</span><input type="text" name="prod3" class="form-control input-prod"><input type="text" name="qty3" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit3" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile3">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 3)"></label><input type="hidden" id="fileData3" name="fileData3"><input type="hidden" id="fileName3" name="fileName3"><input type="hidden" id="fileType3" name="fileType3"></div>
-                        <div class="product-item-row"><span class="product-num">4</span><input type="text" name="prod4" class="form-control input-prod"><input type="text" name="qty4" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit4" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile4">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 4)"></label><input type="hidden" id="fileData4" name="fileData4"><input type="hidden" id="fileName4" name="fileName4"><input type="hidden" id="fileType4" name="fileType4"></div>
-                        <div class="product-item-row"><span class="product-num">5</span><input type="text" name="prod5" class="form-control input-prod"><input type="text" name="qty5" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit5" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile5">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 5)"></label><input type="hidden" id="fileData5" name="fileData5"><input type="hidden" id="fileName5" name="fileName5"><input type="hidden" id="fileType5" name="fileType5"></div>
-                        <div class="product-item-row"><span class="product-num">6</span><input type="text" name="prod6" class="form-control input-prod"><input type="text" name="qty6" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit6" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile6">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 6)"></label><input type="hidden" id="fileData6" name="fileData6"><input type="hidden" id="fileName6" name="fileName6"><input type="hidden" id="fileType6" name="fileType6"></div>
-                        <div class="product-item-row"><span class="product-num">7</span><input type="text" name="prod7" class="form-control input-prod"><input type="text" name="qty7" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit7" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile7">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 7)"></label><input type="hidden" id="fileData7" name="fileData7"><input type="hidden" id="fileName7" name="fileName7"><input type="hidden" id="fileType7" name="fileType7"></div>
-                        <div class="product-item-row"><span class="product-num">8</span><input type="text" name="prod8" class="form-control input-prod"><input type="text" name="qty8" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit8" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile8">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 8)"></label><input type="hidden" id="fileData8" name="fileData8"><input type="hidden" id="fileName8" name="fileName8"><input type="hidden" id="fileType8" name="fileType8"></div>
-                        <div class="product-item-row"><span class="product-num">9</span><input type="text" name="prod9" class="form-control input-prod"><input type="text" name="qty9" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit9" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile9">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 9)"></label><input type="hidden" id="fileData9" name="fileData9"><input type="hidden" id="fileName9" name="fileName9"><input type="hidden" id="fileType9" name="fileType9"></div>
-                        <div class="product-item-row"><span class="product-num">10</span><input type="text" name="prod10" class="form-control input-prod"><input type="text" name="qty10" class="form-control input-qty" style="text-align: center;"><input type="text" name="unit10" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile10">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 10)"></label><input type="hidden" id="fileData10" name="fileData10"><input type="hidden" id="fileName10" name="fileName10"><input type="hidden" id="fileType10" name="fileType10"></div>
-                    </div>
-                    <button type="submit" class="btn-block" id="submitBtn">บันทึกข้อมูลและส่งแจ้งหน้างาน</button>
-                </div>
-            </form>
-        </div>
-
-        <div id="report-page" class="page-section">
-            <div class="card">
-                <h2>📈 รายการกระทบยอดคลังสินค้า (Real-time)</h2>
-                
-                <button class="btn-excel" id="exportBtn" onclick="exportToExcel()" disabled>
-                    📥 Export to Excel
-                </button>
-
-                <div class="table-responsive">
-                    <table class="report-table" id="dataTableToExport">
-                        <thead>
-                            <tr>
-                                <th>วันที่</th>
-                                <th>เวลา</th>
-                                <th>ประเภท</th>
-                                <th>บริษัท/ซัพพลายเออร์</th>
-                                <th>ผู้ทำรายการ</th>
-                                <th>เบอร์โทร</th>
-                                <th>ชื่อสินค้า</th>
-                                <th>จำนวน</th>
-                                <th>หน่วย</th>
-                                <th>รูปถ่าย</th>
-                                <th>จัดการ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="reportData">
-                            <tr>
-                                <td colspan="11" class="loading-text">⏳ กำลังโหลดข้อมูลสดจากคลังสินค้า...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // ⚠️ [จุดแก้ไขสำคัญ]: มาร์เวลตั้งระบบให้ดึงลิงก์ปัจจุบันแบบอัตโนมัติ เพื่อป้องกันการก๊อปปี้ลิงก์สคริปต์มาผิดตัวครับ
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzANag7pXp4qlDGSUiNgo9iv-iCvdXfo_mwpcEVDNCZ0lO-XbtxDGv3bgBifTHlsa0DYA/exec"; 
-        let rawReportData = [];
-
-        function handleFileSelected(input, id) {
-            const file = input.files[0];
-            const label = document.getElementById(`lblFile${id}`);
-            
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(`fileData${id}`).value = e.target.result;
-                    document.getElementById(`fileName${id}`).value = file.name;
-                    document.getElementById(`fileType${id}`).value = file.type;
-                    
-                    label.classList.add('has-file');
-                    label.innerHTML = '✓';
-                }
-                reader.readAsDataURL(file);
-            }
+        if (!WEB_APP_URL || WEB_APP_URL.includes("วางลิงก์")) {
+            alert("❌ ล้มเหลว: พี่ลืมเอาลิงก์จาก Apps Script มาใส่ในโค้ดบรรทัดที่ 48 ครับ!");
+            return;
         }
 
-        function setTransactionType(type) {
-            document.getElementById('transactionType').value = type;
-            const depBtn = document.getElementById('typeDeposit');
-            const withBtn = document.getElementById('typeWithdraw');
-            const submitBtn = document.getElementById('submitBtn');
-            const sectionTitle1 = document.getElementById('sectionTitle1');
-            const labelPerson = document.getElementById('labelPerson');
+        const productName = document.getElementById('productName').value;
+        const quantity = document.getElementById('quantity').value;
+        const loadingText = document.getElementById('loadingText');
 
-            if(type === 'ฝากสินค้า') {
-                depBtn.classList.add('active');
-                withBtn.classList.remove('active');
-                submitBtn.classList.remove('withdraw-theme');
-                submitBtn.innerText = "บันทึกข้อมูลและส่งแจ้งหน้างาน";
-                sectionTitle1.innerText = "1. ข้อมูลผู้แจ้งฝากสินค้า";
-                labelPerson.innerText = "ชื่อผู้ประสานงาน / คนฝาก";
-            } else {
-                withBtn.classList.add('active');
-                depBtn.classList.remove('active');
-                submitBtn.classList.add('withdraw-theme');
-                submitBtn.innerText = "ยืนยันการเบิกสินค้าและส่งแจ้งหน้างาน";
-                sectionTitle1.innerText = "1. ข้อมูลผู้ขอเบิกสินค้า";
-                labelPerson.innerText = "ชื่อผู้รับสินค้า / คนเบิก";
-            }
-        }
+        // แสดงข้อความกำลังโหลด และปิดปุ่มส่งชั่วคราวกันกดซ้ำ
+        loadingText.style.display = 'block';
+        document.querySelector('.btn-submit').disabled = true;
 
-        function switchPage(pageId, btn) {
-            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(tBtn => tBtn.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            btn.classList.add('active');
-            
-            if(pageId === 'report-page') {
-                fetchReportData();
-            }
-        }
+        // จัดกลุ่มข้อมูลเตรียมยิงไปหลังบ้าน
+        const payload = {
+            productName: productName,
+            quantity: quantity,
+            image: base64ImageString
+        };
 
-        function fetchReportData() {
-            const tbody = document.getElementById('reportData');
-            const exportBtn = document.getElementById('exportBtn');
-            tbody.innerHTML = '<tr><td colspan="11" class="loading-text">⏳ กำลังดึงข้อมูลล่าสุด...</td></tr>';
-            exportBtn.disabled = true;
-            
-            const oldScript = document.getElementById('jsonpScript');
-            if (oldScript) oldScript.remove();
-            
-            window.handleLogData = function(data) {
-                if(!data || data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="11" class="loading-text">ยังไม่มีข้อมูลในคลังสินค้าในขณะนี้</td></tr>';
-                    rawReportData = [];
-                    return;
-                }
-                
-                rawReportData = data;
-                exportBtn.disabled = false;
-                
-                let html = '';
-                for(let i = data.length - 1; i >= 0; i--) {
-                    const row = data[i];
-                    
-                    const isWithdraw = row.type === 'ขอเบิกสินค้า' || row.type === 'withdraw';
-                    const typeText = isWithdraw ? 'เบิกสินค้า' : 'ฝากสินค้า';
-                    const typeBadge = isWithdraw ? 'badge-withdraw' : 'badge-deposit';
-                    const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
-                    const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
-                    
-                    let picColumn = '<span style="color:#94a3b8;">ไม่มีรูป</span>';
-                    if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.trim() !== "" && row.fileUrl.startsWith("http")) {
-                        picColumn = `<a href="${row.fileUrl}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
-                    }
+        // ยิงข้อมูลข้ามท่อไปยัง Google Apps Script Web App
+        fetch(WEB_APP_URL, {
+            method: 'POST',
+            mode: 'no-cors', // ตั้งเพื่อป้องกันปัญหาบล็อกข้ามโดเมน (CORS)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(() => {
+            alert('🎉 บันทึกข้อมูลสำเร็จแล้วครับป๋ม! เช็คใน Google Sheet ได้เลยครับ');
+            // ล้างฟอร์มเคลียร์ค่าเพื่อเริ่มบันทึกชิ้นใหม่
+            document.getElementById('stockForm').reset();
+            previewImg.style.display = 'none';
+            base64ImageString = "";
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('❌ เกิดข้อผิดพลาดในการส่งข้อมูล กรุณาลองใหม่อีกครั้ง');
+        })
+        .finally(() => {
+            loadingText.style.display = 'none';
+            document.querySelector('.btn-submit').disabled = false;
+        });
+    });
+</script>
 
-                    html += `<tr>
-                        <td>${row.date || '-'}</td>
-                        <td>${row
+</body>
+</html>
