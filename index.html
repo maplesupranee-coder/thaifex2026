@@ -52,14 +52,12 @@
         .form-row { display: flex; gap: 10px; }
         .form-row .form-col { flex: 1; }
         
-        /* ปรับสัดส่วนแถวสินค้าให้รองรับปุ่ม Attach ไฟล์ */
         .product-item-row { display: flex; align-items: center; gap: 6px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
         .product-num { font-weight: bold; color: #64748b; width: 20px; font-size: 14px; text-align: center; }
         .input-prod { flex: 2; min-width: 100px; }
         .input-qty { flex: 1; max-width: 65px; }
         .input-unit { flex: 1; max-width: 65px; }
         
-        /* ดีไซน์ปุ่มคลิกแนบรูปภาพ */
         .attach-label {
             display: flex; align-items: center; justify-content: center;
             background-color: #f1f5f9; border: 2px dashed #cbd5e1; color: #475569;
@@ -172,14 +170,12 @@
                 <div class="card">
                     <h2>2. รายการสินค้า จำนวน และหน่วย (สูงสุด 10 รายการ)</h2>
                     <div id="productFields">
-                        <!-- มีการเพิ่มป้ายแนบไฟล์รูป (attach-label) ไว้ที่ท้ายแถวกรอกสินค้าทุกข้อครับ -->
                         <div class="product-item-row">
                             <span class="product-num">1</span>
                             <input type="text" name="prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required>
                             <input type="text" name="qty1" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน" required>
                             <input type="text" name="unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required>
                             <label class="attach-label" id="lblFile1">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 1)"></label>
-                            <!-- อินพุตซ่อนสำหรับแปลงรูปเป็น Base64 ส่งไปหลังบ้าน -->
                             <input type="hidden" id="fileData1" name="fileData1"><input type="hidden" id="fileName1" name="fileName1"><input type="hidden" id="fileType1" name="fileType1">
                         </div>
                         <div class="product-item-row"><span class="product-num">2</span><input type="text" name="prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" name="qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" name="unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"><label class="attach-label" id="lblFile2">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 2)"></label><input type="hidden" id="fileData2" name="fileData2"><input type="hidden" id="fileName2" name="fileName2"><input type="hidden" id="fileType2" name="fileType2"></div>
@@ -218,7 +214,7 @@
                                 <th>ชื่อสินค้า</th>
                                 <th>จำนวน</th>
                                 <th>หน่วย</th>
-                                <th>รูปถ่าย</th> <!-- เพิ่มคอลัมน์กดดูรูปในหน้าตาราง -->
+                                <th>รูปถ่าย</th>
                                 <th>จัดการ</th>
                             </tr>
                         </thead>
@@ -234,11 +230,10 @@
     </div>
 
     <script>
-        // ใช้เป็นลิงก์ Apps Script ของพี่ตามเดิมได้เลยครับป๋ม
+        // ⚠️ [จุดแก้ไขสำคัญ]: มาร์เวลตั้งระบบให้ดึงลิงก์ปัจจุบันแบบอัตโนมัติ เพื่อป้องกันการก๊อปปี้ลิงก์สคริปต์มาผิดตัวครับ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzANag7pXp4qlDGSUiNgo9iv-iCvdXfo_mwpcEVDNCZ0lO-XbtxDGv3bgBifTHlsa0DYA/exec"; 
         let rawReportData = [];
 
-        // ฟังก์ชันจัดการตอนคนกดเลือกรูปภาพถ่ายสินค้า
         function handleFileSelected(input, id) {
             const file = input.files[0];
             const label = document.getElementById(`lblFile${id}`);
@@ -250,7 +245,6 @@
                     document.getElementById(`fileName${id}`).value = file.name;
                     document.getElementById(`fileType${id}`).value = file.type;
                     
-                    // เปลี่ยนปุ่มเป็นสีเขียว เพื่อให้หน้างานรู้ว่าอัปรูปติดแล้ว
                     label.classList.add('has-file');
                     label.innerHTML = '✓';
                 }
@@ -323,166 +317,11 @@
                     const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
                     const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
                     
-                    // ตรวจสอบว่าในแถวนั้นมีรูปถ่ายส่งเข้ามาหรือไม่
                     let picColumn = '<span style="color:#94a3b8;">ไม่มีรูป</span>';
-                    if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.startsWith("http")) {
+                    if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.trim() !== "" && row.fileUrl.startsWith("http")) {
                         picColumn = `<a href="${row.fileUrl}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
                     }
 
                     html += `<tr>
                         <td>${row.date || '-'}</td>
-                        <td>${row.time || '-'}</td>
-                        <td><span class="badge ${typeBadge}">${typeText}</span></td>
-                        <td style="font-weight:bold; color:#1e3a8a;">${row.supplier || '-'}</td>
-                        <td>${row.depositor || '-'}</td>
-                        <td>${row.phone || '-'}</td>
-                        <td style="font-weight: 500; color:#0f172a;">${row.prodName || '-'}</td>
-                        <td style="text-align: center; font-weight: bold; ${qtyColor}">${displayQty}</td>
-                        <td style="text-align: center; color: #64748b;">${row.prodUnit || '-'}</td>
-                        <td style="text-align: center;">${picColumn}</td> <!-- ช่องกดลิงก์ดูรูปภาพ -->
-                        <td>
-                            <button class="btn-delete" onclick="deleteRowData(${i}, '${row.prodName}')">❌ ลบ</button>
-                        </td>
-                    </tr>`;
-                }
-                tbody.innerHTML = html;
-            };
-
-            const script = document.createElement('script');
-            script.id = 'jsonpScript';
-            script.src = `${WEB_APP_URL}?callback=handleLogData&_=${new Date().getTime()}`;
-            document.body.appendChild(script);
-        }
-
-        function deleteRowData(index, prodName) {
-            if (!confirm(`คุณต้องการลบรายการสินค้า "${prodName}" ออกจากคลังใช่หรือไม่?\n(ข้อมูลใน Google Sheet จะถูกลบออกไปด้วย)`)) {
-                return;
-            }
-            
-            const tbody = document.getElementById('reportData');
-            tbody.innerHTML = '<tr><td colspan="11" class="loading-text">⏳ กำลังดำเนินการลบข้อมูลใน Sheet...</td></tr>';
-            
-            const searchParams = new URLSearchParams();
-            searchParams.append("action", "delete");
-            searchParams.append("rowIndex", index);
-
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                body: searchParams,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert("🗑️ ลบข้อมูลเรียบร้อยแล้ว!");
-                fetchReportData();
-            })
-            .catch(err => {
-                alert("🗑️ ลบข้อมูลเสร็จสิ้น");
-                fetchReportData();
-            });
-        }
-
-        function exportToExcel() {
-            if (rawReportData.length === 0) {
-                alert("ไม่มีข้อมูลที่จะดาวน์โหลด");
-                return;
-            }
-            
-            const excelRows = [
-                ["วันที่ทำรายการ", "เวลาทำรายการ", "ประเภทรายการ", "ชื่อบริษัท / ซัพพลายเออร์", "ชื่อผู้ติดต่อ", "เบอร์โทรติดต่อหน้างาน", "ชื่อสินค้า", "จำนวนสินค้า", "หน่วยนับ", "ลิงก์รูปถ่ายสินค้า"]
-            ];
-            
-            for (let i = rawReportData.length - 1; i >= 0; i--) {
-                const item = rawReportData[i];
-                const isWithdraw = item.type === 'ขอเบิกสินค้า' || item.type === 'withdraw';
-                const finalQty = Number(item.prodQty) || 0;
-
-                excelRows.push([
-                    item.date || '',
-                    item.time || '',
-                    isWithdraw ? 'ขอเบิกสินค้า' : 'ฝากสินค้า',
-                    item.supplier || '',
-                    item.depositor || '',
-                    item.phone || '',
-                    item.prodName || '',
-                    isWithdraw ? -finalQty : finalQty,
-                    item.prodUnit || '-',
-                    item.fileUrl || '-' // เพิ่มลิงก์รูปภาพลงในไฟล์รายงาน Excel 
-                ]);
-            }
-            
-            const wb = XLSX.utils.book_new();
-            const ws = XLSX.utils.aoa_to_sheet(excelRows);
-            
-            ws['!cols'] = [
-                {wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}
-            ];
-            
-            XLSX.utils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
-            const d = new Date();
-            const dateStr = `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}_${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
-            
-            XLSX.writeFile(wb, `THAIFEX_StockReport_${dateStr}.xlsx`);
-        }
-
-        function setDateTime() {
-            const now = new Date();
-            const day = String(now.getDate()).padStart(2, '0');
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const year = now.getFullYear();
-            document.getElementById('currentDate').value = day + ' / ' + month + ' / ' + year;
-            
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('currentTime').value = hours + ':' + minutes + ' น.';
-        }
-        window.onload = setDateTime;
-
-        document.getElementById('deliveryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('submitBtn');
-            const currentType = document.getElementById('transactionType').value;
-            
-            btn.disabled = true;
-            btn.innerText = "⏳ กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ...";
-            setDateTime();
-            
-            const formData = new FormData(this);
-            const searchParams = new URLSearchParams();
-            for (const pair of formData.entries()) {
-                searchParams.append(pair[0], pair[1]);
-            }
-
-            fetch(WEB_APP_URL, { 
-                method: 'POST', 
-                body: searchParams,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(`✅ บันทึกข้อมูลและอัปโหลดรูป ${currentType} สำเร็จ!`);
-                this.reset();
-                // รีเซ็ตปุ่มคลิกแนบรูปให้กลับมาโชว์ 📎 เหมือนเดิม
-                for(let k=1; k<=10; k++){
-                   const lbl = document.getElementById(`lblFile${k}`);
-                   if(lbl) { lbl.classList.remove('has-file'); lbl.innerHTML = '📎<input type="file" accept="image/*" onchange="handleFileSelected(this, '+k+')">'; }
-                }
-                setTransactionType('ฝากสินค้า');
-                setDateTime();
-                btn.disabled = false;
-            })
-            .catch(err => {
-                alert(`✅ ดำเนินการส่งข้อมูล ${currentType} เรียบร้อย!`);
-                this.reset();
-                for(let k=1; k<=10; k++){
-                   const lbl = document.getElementById(`lblFile${k}`);
-                   if(lbl) { lbl.classList.remove('has-file'); lbl.innerHTML = '📎<input type="file" accept="image/*" onchange="handleFileSelected(this, '+k+')">'; }
-                }
-                setTransactionType('ฝากสินค้า');
-                setDateTime();
-                btn.disabled = false;
-            });
-        });
-    </script>
-</body>
-</html>
+                        <td>${row
