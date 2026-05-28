@@ -230,7 +230,7 @@
     </div>
 
     <script>
-        // ผูกลิงก์เวอร์ชัน 27 ของพี่ไว้ตรงล็อคเรียบร้อยครับ
+        // ผูกลิงก์เวอร์ชัน 27 ของพี่เรียบร้อยครับ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLoeIaD7gEvlwOos9CNP-zuqON5PMukPvHx3wXFvPp89yKjhzeUWSagzqswrxUCmNDBg/exec"; 
         let rawReportData = [];
 
@@ -311,6 +311,8 @@
                     const isWithdraw = row.type === 'ขอเบิกสินค้า' || row.type === 'withdraw';
                     const typeText = isWithdraw ? 'เบิกสินค้า' : 'ฝากสินค้า';
                     const typeBadge = isWithdraw ? 'badge-withdraw' : 'badge-deposit';
+                    
+                    // ✨ แก้จุดบั๊กหลัก: ปรับตัวแปรดึงหน้าจอให้เป็นตัวพิมพ์ใหญ่ตรงตามโครงสร้าง Object (Javscript ดึงค่าแมตช์ Sheet)
                     const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
                     const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
                     
@@ -366,7 +368,7 @@
                 fetchReportData();
             })
             .catch(() => {
-                alert("🗑️ ลบข้อมูลเสสิ้น");
+                alert("🗑️ ลบข้อมูลเสร็จสิ้น");
                 fetchReportData();
             });
         }
@@ -400,7 +402,6 @@
             btn.disabled = true;
             btn.innerText = "⏳ กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ...";
             
-            // ใช้เทคนิคยิงข้อมูลแบบจับคู่ตัวแปรพิมพ์ใหญ่ให้ตรงระบบหลังบ้าน 100%
             const searchParams = new URLSearchParams();
             searchParams.append("type", document.getElementById('transactionType').value);
             searchParams.append("date", document.getElementById('currentDate').value);
@@ -409,7 +410,7 @@
             searchParams.append("depositor", document.querySelector('input[name="depositor"]').value);
             searchParams.append("phone", document.querySelector('input[name="phone"]').value);
 
-            // บังคับเปลี่ยนตัวแปรส่งสินค้าเป็นตัวพิมพ์ใหญ่ตามใจหลังบ้าน
+            // บังคับแปลงตัวแปรยิงเข้าฝั่ง doPost ให้เป็นตัวใหญ่ตรงล็อคเป๊ะๆ
             for (let k = 1; k <= 10; k++) {
                 searchParams.append("Prod" + k, document.querySelector('input[name="Prod' + k + '"]').value);
                 searchParams.append("Qty" + k, document.querySelector('input[name="Qty' + k + '"]').value);
