@@ -232,7 +232,7 @@
 
     <script>
         // ✏️ [จุดสำคัญมาก]: เมื่อกดบันทึกไฟล์เสร็จ พี่อย่าลืมวางลิงก์ Web App ตัวล่าสุดในเครื่องหมายคำพูดด้านล่างนี้แทนลิงก์นี้ด้วยนะครับ!
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyEu38LfjmYNvCwJNvKweaIeDYRLX3lHf2OzBTCjyDDq6VfMNhMsiD5Ik6x4FdhaCmEHg/exec"; 
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwDTuTRPsLSjxMyc-VS0oMcxqGqUsxSgRCS1p7vc5IRTgDqO8sFuHhgSbPx3h1NSupGWQ/exec"; 
         let rawReportData = [];
 
         // ฟังก์ชันอ่านไฟล์รูปภาพเปลี่ยนสถานะเป็นถูกสีเขียว
@@ -251,6 +251,7 @@
                 reader.readAsDataURL(file);
             }
         }
+
         function setTransactionType(type) {
             document.getElementById('transactionType').value = type;
             const depBtn = document.getElementById('typeDeposit');
@@ -383,7 +384,7 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             ws['!cols'] = [{wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}];
-            XLSX.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
+            XcontentUtils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
             XLSX.writeFile(wb, `THAIFEX_StockReport_${new Date().getTime()}.xlsx`);
         }
 
