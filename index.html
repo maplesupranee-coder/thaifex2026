@@ -311,12 +311,13 @@
                     const typeText = isWithdraw ? 'เบิกสินค้า' : 'ฝากสินค้า';
                     const typeBadge = isWithdraw ? 'badge-withdraw' : 'badge-deposit';
                     
-                    const displayQty = isWithdraw ? `-${row.Qty1 || '0'}` : `${row.Qty1 || '0'}`;
+                    // ✨ แก้ไขแมตช์ตัวแปรให้ตรงกับไฟล์หลังบ้าน รหัส.gs เป๊ะๆ
+                    const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
                     const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
                     
                     let picColumn = '<span style="color:#94a3b8;">ไม่มีรูป</span>';
-                    if (row.fileUrl1 && row.fileUrl1 !== "-" && row.fileUrl1.trim() !== "" && row.fileUrl1.startsWith("http")) {
-                        picColumn = `<a href="${row.fileUrl1}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
+                    if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.trim() !== "" && row.fileUrl.startsWith("http")) {
+                        picColumn = `<a href="${row.fileUrl}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
                     }
 
                     html += `<tr>
@@ -326,12 +327,12 @@
                         <td style="font-weight:bold; color:#1e3a8a;">${row.supplier || '-'}</td>
                         <td>${row.depositor || '-'}</td>
                         <td>${row.phone || '-'}</td>
-                        <td style="font-weight: 500; color:#0f172a;">${row.Prod1 || '-'}</td>
+                        <td style="font-weight: 500; color:#0f172a;">${row.prodName || '-'}</td>
                         <td style="text-align: center; font-weight: bold; ${qtyColor}">${displayQty}</td>
-                        <td style="text-align: center; color: #64748b;">${row.Unit1 || '-'}</td>
+                        <td style="text-align: center; color: #64748b;">${row.prodUnit || '-'}</td>
                         <td style="text-align: center;">${picColumn}</td>
                         <td>
-                            <button class="btn-delete" onclick="deleteRowData(${i}, '${row.Prod1}')">❌ ลบ</button>
+                            <button class="btn-delete" onclick="deleteRowData(${i}, '${row.prodName}')">❌ ลบ</button>
                         </td>
                     </tr>`;
                 }
@@ -377,7 +378,7 @@
             for (let i = rawReportData.length - 1; i >= 0; i--) {
                 const item = rawReportData[i];
                 const isWithdraw = item.type === 'ขอเบิกสินค้า' || item.type === 'withdraw';
-                excelRows.push([item.date || '', item.time || '', isWithdraw ? 'ขอเบิกสินค้า' : 'ฝากสินค้า', item.supplier || '', item.depositor || '', item.phone || '', item.Prod1 || '', isWithdraw ? -Number(item.Qty1) : Number(item.Qty1), item.Unit1 || '-', item.fileUrl1 || '-']);
+                excelRows.push([item.date || '', item.time || '', isWithdraw ? 'ขอเบิกสินค้า' : 'ฝากสินค้า', item.supplier || '', item.depositor || '', item.phone || '', item.prodName || '', isWithdraw ? -Number(item.prodQty) : Number(item.prodQty), item.prodUnit || '-', item.fileUrl || '-']);
             }
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
@@ -400,7 +401,6 @@
             btn.disabled = true;
             btn.innerText = "⏳ กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ...";
             
-            // ✨ ปลุกเสกความปลอดภัยขั้นสูง: ดึงค่าแบบชัวร์รายบรรทัด การันตีไม่ระเบิดกลางทางแม้พิมพ์ไม่ครบ 10 แถว
             const searchParams = new URLSearchParams();
             searchParams.append("type", document.getElementById('transactionType').value);
             searchParams.append("date", document.getElementById('currentDate').value);
@@ -409,7 +409,6 @@
             searchParams.append("depositor", document.getElementById('depositor').value);
             searchParams.append("phone", document.getElementById('phone').value);
 
-            // ดึงค่าอย่างปลอดภัยจาก id ตรงๆ ทีละตัว 1-10
             for (let k = 1; k <= 10; k++) {
                 const prodEl = document.getElementById("Prod" + k);
                 const qtyEl = document.getElementById("Qty" + k);
