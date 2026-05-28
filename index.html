@@ -52,11 +52,11 @@
         .form-row { display: flex; gap: 10px; }
         .form-row .form-col { flex: 1; }
         
-        .product-item-row { display: flex; align-items: center; gap: 6px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
+        .product-item-row { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
         .product-num { font-weight: bold; color: #64748b; width: 22px; font-size: 15px; text-align: center; }
-        .input-prod { flex: 2; min-width: 130px; }
-        .input-qty { flex: 1; max-width: 80px; }
-        .input-unit { flex: 1; max-width: 80px; }
+        .input-prod { flex: 2; min-width: 140px; }
+        .input-qty { flex: 1; max-width: 90px; }
+        .input-unit { flex: 1; max-width: 90px; }
         
         .btn-block {
             width: 100%; background-color: #16a34a; color: white; padding: 16px; border: none; border-radius: 8px;
@@ -162,7 +162,7 @@
                             <input type="text" id="Unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required>
                         </div>
                         <div class="product-item-row"><span class="product-num">2</span><input type="text" id="Prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" id="Qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" id="Unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"></div>
-                        <div class="product-item-row"><span class="product-num">3</span><input type="text" id="Prod3" class="form-control input-prod"><input type="text" id="Qty3" class="form-control input-qty" style="text-align: center;"><input type="text" id="Unit3" class="form-control input-unit" style="text-align: center;"></div>
+                        <div class="product-item-row"><span class="product-num">3</span><input type="text" id="Prod3" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 3"><input type="text" id="Qty3" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" id="Unit3" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"></div>
                         <div class="product-item-row"><span class="product-num">4</span><input type="text" id="Prod4" class="form-control input-prod"><input type="text" id="Qty4" class="form-control input-qty" style="text-align: center;"><input type="text" id="Unit4" class="form-control input-unit" style="text-align: center;"></div>
                         <div class="product-item-row"><span class="product-num">5</span><input type="text" id="Prod5" class="form-control input-prod"><input type="text" id="Qty5" class="form-control input-qty" style="text-align: center;"><input type="text" id="Unit5" class="form-control input-unit" style="text-align: center;"></div>
                         <div class="product-item-row"><span class="product-num">6</span><input type="text" id="Prod6" class="form-control input-prod"><input type="text" id="Qty6" class="form-control input-qty" style="text-align: center;"><input type="text" id="Unit6" class="form-control input-unit" style="text-align: center;"></div>
@@ -212,7 +212,7 @@
     </div>
 
     <script>
-        // ⚠️ บรรทัดที่ 202: แปะลิงก์ URL ของเว็บแอป ล่าสุดที่พี่ก๊อปปี้มาจาก Apps Script เมื่อกี้ลงในเครื่องหมายคำพูดนี้แทนของเก่าครับป๋ม
+        // ⚠️ บรรทัดที่ 196: แปะลิงก์ URL ของเว็บแอปหลังบ้านลงในเครื่องหมายคำพูดนี้แทนของเก่าครับป๋ม
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLoeIaD7gEvlwOos9CNP-zuqON5PMukPvHx3wXFvPp89yKjhzeUWSagzqswrxUCmNDBg/exec"; 
         let rawReportData = [];
 
