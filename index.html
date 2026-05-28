@@ -52,7 +52,6 @@
         .form-row { display: flex; gap: 10px; }
         .form-row .form-col { flex: 1; }
         
-        /* ปรับดีไซน์แถวกรอกสินค้าและปุ่มคลิกแนบรูปถ่าย */
         .product-item-row { display: flex; align-items: center; gap: 6px; padding: 10px 0; border-bottom: 1px solid #f1f5f9; }
         .product-num { font-weight: bold; color: #64748b; width: 22px; font-size: 15px; text-align: center; }
         .input-prod { flex: 2; min-width: 110px; }
@@ -171,24 +170,25 @@
                 <div class="card">
                     <h2>2. รายการสินค้า จำนวน และหน่วย (สูงสุด 10 รายการ)</h2>
                     <div id="productFields">
-                     // ฟังก์ชันอ่านไฟล์รูปภาพเปลี่ยนปุ่มเป็นเครื่องหมายถูกสีเขียวเมื่อเลือกเสร็จ
-        function handleFileSelected(input, id) {
-            const file = input.files[0];
-            const label = document.getElementById(`lblFile${id}`);
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById(`fileData${id}`).value = e.target.result;
-                    document.getElementById(`fileName${id}`).value = file.name;
-                    document.getElementById(`fileType${id}`).value = file.type;
-                    label.style.backgroundColor = '#dcfce7';
-                    label.style.borderColor = '#22c55e';
-                    label.style.color = '#16a34a';
-                    label.innerHTML = '✓';
-                }
-                reader.readAsDataURL(file);
-            }
-        } 
+                        <!-- ปุ่ม Attach 📎 ท้ายช่องกรอกสินค้าทั้ง 10 แถว ถูกผูกค่าตัวเลขพิมพ์ใหญ่ Prod / Qty / Unit ครบถ้วนแล้วครับ -->
+                        <div class="product-item-row">
+                            <span class="product-num">1</span>
+                            <input type="text" name="Prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required>
+                            <input type="text" name="Qty1" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน" required>
+                            <input type="text" name="Unit1" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย" required>
+                            <label class="attach-label" id="lblFile1">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 1)"></label>
+                            <input type="hidden" id="fileData1" name="fileData1"><input type="hidden" id="fileName1" name="fileName1"><input type="hidden" id="fileType1" name="fileType1">
+                        </div>
+                        <div class="product-item-row"><span class="product-num">2</span><input type="text" name="Prod2" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 2"><input type="text" name="Qty2" class="form-control input-qty" style="text-align: center;" placeholder="จำนวน"><input type="text" name="Unit2" class="form-control input-unit" style="text-align: center;" placeholder="หน่วย"><label class="attach-label" id="lblFile2">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 2)"></label><input type="hidden" id="fileData2" name="fileData2"><input type="hidden" id="fileName2" name="fileName2"><input type="hidden" id="fileType2" name="fileType2"></div>
+                        <div class="product-item-row"><span class="product-num">3</span><input type="text" name="Prod3" class="form-control input-prod"><input type="text" name="Qty3" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit3" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile3">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 3)"></label><input type="hidden" id="fileData3" name="fileData3"><input type="hidden" id="fileName3" name="fileName3"><input type="hidden" id="fileType3" name="fileType3"></div>
+                        <div class="product-item-row"><span class="product-num">4</span><input type="text" name="Prod4" class="form-control input-prod"><input type="text" name="Qty4" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit4" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile4">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 4)"></label><input type="hidden" id="fileData4" name="fileData4"><input type="hidden" id="fileName4" name="fileName4"><input type="hidden" id="fileType4" name="fileType4"></div>
+                        <div class="product-item-row"><span class="product-num">5</span><input type="text" name="Prod5" class="form-control input-prod"><input type="text" name="Qty5" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit5" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile5">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 5)"></label><input type="hidden" id="fileData5" name="fileData5"><input type="hidden" id="fileName5" name="fileName5"><input type="hidden" id="fileType5" name="fileType5"></div>
+                        <div class="product-item-row"><span class="product-num">6</span><input type="text" name="Prod6" class="form-control input-prod"><input type="text" name="Qty6" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit6" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile6">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 6)"></label><input type="hidden" id="fileData6" name="fileData6"><input type="hidden" id="fileName6" name="fileName6"><input type="hidden" id="fileType6" name="fileType6"></div>
+                        <div class="product-item-row"><span class="product-num">7</span><input type="text" name="Prod7" class="form-control input-prod"><input type="text" name="Qty7" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit7" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile7">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 7)"></label><input type="hidden" id="fileData7" name="fileData7"><input type="hidden" id="fileName7" name="fileName7"><input type="hidden" id="fileType7" name="fileType7"></div>
+                        <div class="product-item-row"><span class="product-num">8</span><input type="text" name="Prod8" class="form-control input-prod"><input type="text" name="Qty8" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit8" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile8">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 8)"></label><input type="hidden" id="fileData8" name="fileData8"><input type="hidden" id="fileName8" name="fileName8"><input type="hidden" id="fileType8" name="fileType8"></div>
+                        <div class="product-item-row"><span class="product-num">9</span><input type="text" name="Prod9" class="form-control input-prod"><input type="text" name="Qty9" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit9" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile9">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 9)"></label><input type="hidden" id="fileData9" name="fileData9"><input type="hidden" id="fileName9" name="fileName9"><input type="hidden" id="fileType9" name="fileType9"></div>
+                        <div class="product-item-row"><span class="product-num">10</span><input type="text" name="Prod10" class="form-control input-prod"><input type="text" name="Qty10" class="form-control input-qty" style="text-align: center;"><input type="text" name="Unit10" class="form-control input-unit" style="text-align: center;"><label class="attach-label" id="lblFile10">📎<input type="file" accept="image/*" onchange="handleFileSelected(this, 10)"></label><input type="hidden" id="fileData10" name="fileData10"><input type="hidden" id="fileName10" name="fileName10"><input type="hidden" id="fileType10" name="fileType10"></div>
+                    </div>
                     <button type="submit" class="btn-block" id="submitBtn">บันทึกข้อมูลและส่งแจ้งหน้างาน</button>
                 </div>
             </form>
@@ -215,7 +215,8 @@
                                 <th>ชื่อสินค้า</th>
                                 <th>จำนวน</th>
                                 <th>หน่วย</th>
-                                <th>รูปถ่าย</th> <th>จัดการ</th>
+                                <th>รูปถ่าย</th> 
+                                <th>จัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="reportData">
@@ -230,11 +231,11 @@
     </div>
 
     <script>
-        // ✏️ [จุดสำคัญ]: สลับลิงก์ตรงนี้ให้เป็นลิงก์จริงที่คัดลอกมาจาก Apps Script ข้อที่ 1 ครับป๋ม!
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx-Y1OzGRg5Ojm8wC71JTY0bNbPZzZR-_FrlgS6tdtbEMJ466lNk2VFskVR0YvGAWbe5A/exec"; 
+        // ✏️ [จุดสำคัญมาก]: เมื่อกดบันทึกไฟล์เสร็จ พี่อย่าลืมวางลิงก์ Web App ตัวล่าสุดในเครื่องหมายคำพูดด้านล่างนี้แทนลิงก์นี้ด้วยนะครับ!
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyEu38LfjmYNvCwJNvKweaIeDYRLX3lHf2OzBTCjyDDq6VfMNhMsiD5Ik6x4FdhaCmEHg/exec"; 
         let rawReportData = [];
 
-        // ฟังก์ชันอ่านไฟล์รูปภาพเมื่อมีการกด Attach หน้างาน
+        // ฟังก์ชันอ่านไฟล์รูปภาพเปลี่ยนสถานะเป็นถูกสีเขียว
         function handleFileSelected(input, id) {
             const file = input.files[0];
             const label = document.getElementById(`lblFile${id}`);
@@ -244,8 +245,6 @@
                     document.getElementById(`fileData${id}`).value = e.target.result;
                     document.getElementById(`fileName${id}`).value = file.name;
                     document.getElementById(`fileType${id}`).value = file.type;
-                    
-                    // เมื่อแนบรูปเสร็จ ปุ่มจะเปลี่ยนเป็นเครื่องหมายถูกสีเขียวทันที เพื่อเตือนใจคนคีย์
                     label.classList.add('has-file');
                     label.innerHTML = '✓';
                 }
@@ -317,7 +316,6 @@
                     const displayQty = isWithdraw ? `-${row.prodQty || '0'}` : `${row.prodQty || '0'}`;
                     const qtyColor = isWithdraw ? 'color: #dc2626;' : 'color: #16a34a;';
                     
-                    // ปลดล็อกระบบเช็กและแสดงผลรูปถ่ายกลับมาทำงานร่วมกับชีตคอลัมน์ที่ 10
                     let picColumn = '<span style="color:#94a3b8;">ไม่มีรูป</span>';
                     if (row.fileUrl && row.fileUrl !== "-" && row.fileUrl.trim() !== "" && row.fileUrl.startsWith("http")) {
                         picColumn = `<a href="${row.fileUrl}" target="_blank" class="btn-view-pic">🖼️ เปิดดู</a>`;
@@ -386,7 +384,7 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             ws['!cols'] = [{wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}];
-            XLSX.utils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
+            XcontentUtils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
             XLSX.writeFile(wb, `THAIFEX_StockReport_${new Date().getTime()}.xlsx`);
         }
 
