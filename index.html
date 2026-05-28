@@ -384,7 +384,7 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             ws['!cols'] = [{wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}];
-            XcontentUtils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
+            XLSX.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
             XLSX.writeFile(wb, `THAIFEX_StockReport_${new Date().getTime()}.xlsx`);
         }
 
