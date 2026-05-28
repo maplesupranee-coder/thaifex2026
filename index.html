@@ -230,7 +230,7 @@
     </div>
 
     <script>
-        // ✏️ มาร์เวลสลับเปลี่ยนลิงก์ล่าสุดเวอร์ชัน 27 ของพี่ใส่ไว้ในคู่นี้เรียบร้อยแล้วครับป๋ม!
+        // ผูกลิงก์เวอร์ชัน 27 ของพี่ไว้ตรงล็อคเรียบร้อยครับ
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLoeIaD7gEvlwOos9CNP-zuqON5PMukPvHx3wXFvPp89yKjhzeUWSagzqswrxUCmNDBg/exec"; 
         let rawReportData = [];
 
@@ -366,7 +366,7 @@
                 fetchReportData();
             })
             .catch(() => {
-                alert("🗑️ ลบข้อมูลเสร็จสิ้น");
+                alert("🗑️ ลบข้อมูลเสสิ้น");
                 fetchReportData();
             });
         }
@@ -382,7 +382,6 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             ws['!cols'] = [{wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}];
-            // แก้บั๊กพิมพ์ผิดเรียบร้อยครับ
             XLSX.utils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
             XLSX.writeFile(wb, `THAIFEX_StockReport_${new Date().getTime()}.xlsx`);
         }
@@ -401,9 +400,24 @@
             btn.disabled = true;
             btn.innerText = "⏳ กำลังบันทึกข้อมูลและอัปโหลดรูปภาพ...";
             
-            const formData = new FormData(this);
+            // ใช้เทคนิคยิงข้อมูลแบบจับคู่ตัวแปรพิมพ์ใหญ่ให้ตรงระบบหลังบ้าน 100%
             const searchParams = new URLSearchParams();
-            for (const pair of formData.entries()) { searchParams.append(pair[0], pair[1]); }
+            searchParams.append("type", document.getElementById('transactionType').value);
+            searchParams.append("date", document.getElementById('currentDate').value);
+            searchParams.append("time", document.getElementById('currentTime').value);
+            searchParams.append("supplier", document.querySelector('input[name="supplier"]').value);
+            searchParams.append("depositor", document.querySelector('input[name="depositor"]').value);
+            searchParams.append("phone", document.querySelector('input[name="phone"]').value);
+
+            // บังคับเปลี่ยนตัวแปรส่งสินค้าเป็นตัวพิมพ์ใหญ่ตามใจหลังบ้าน
+            for (let k = 1; k <= 10; k++) {
+                searchParams.append("Prod" + k, document.querySelector('input[name="Prod' + k + '"]').value);
+                searchParams.append("Qty" + k, document.querySelector('input[name="Qty' + k + '"]').value);
+                searchParams.append("Unit" + k, document.querySelector('input[name="Unit' + k + '"]').value);
+                searchParams.append("fileData" + k, document.getElementById('fileData' + k).value);
+                searchParams.append("fileName" + k, document.getElementById('fileName' + k).value);
+                searchParams.append("fileType" + k, document.getElementById('fileType' + k).value);
+            }
 
             fetch(WEB_APP_URL, { method: 'POST', body: searchParams, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
             .then(() => {
