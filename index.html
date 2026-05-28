@@ -170,7 +170,6 @@
                 <div class="card">
                     <h2>2. รายการสินค้า จำนวน และหน่วย (สูงสุด 10 รายการ)</h2>
                     <div id="productFields">
-                        <!-- ปุ่ม Attach 📎 ท้ายช่องกรอกสินค้าทั้ง 10 แถว ถูกผูกค่าตัวเลขพิมพ์ใหญ่ Prod / Qty / Unit ครบถ้วนแล้วครับ -->
                         <div class="product-item-row">
                             <span class="product-num">1</span>
                             <input type="text" name="Prod1" class="form-control input-prod" placeholder="ชื่อสินค้าที่ 1" required>
@@ -231,11 +230,10 @@
     </div>
 
     <script>
-        // ✏️ [จุดสำคัญมาก]: เมื่อกดบันทึกไฟล์เสร็จ พี่อย่าลืมวางลิงก์ Web App ตัวล่าสุดในเครื่องหมายคำพูดด้านล่างนี้แทนลิงก์นี้ด้วยนะครับ!
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwDTuTRPsLSjxMyc-VS0oMcxqGqUsxSgRCS1p7vc5IRTgDqO8sFuHhgSbPx3h1NSupGWQ/exec"; 
+        // ✏️ มาร์เวลสลับเปลี่ยนลิงก์ล่าสุดเวอร์ชัน 27 ของพี่ใส่ไว้ในคู่นี้เรียบร้อยแล้วครับป๋ม!
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLoeIaD7gEvlwOos9CNP-zuqON5PMukPvHx3wXFvPp89yKjhzeUWSagzqswrxUCmNDBg/exec"; 
         let rawReportData = [];
 
-        // ฟังก์ชันอ่านไฟล์รูปภาพเปลี่ยนสถานะเป็นถูกสีเขียว
         function handleFileSelected(input, id) {
             const file = input.files[0];
             const label = document.getElementById(`lblFile${id}`);
@@ -384,7 +382,8 @@
             const wb = XLSX.utils.book_new();
             const ws = XLSX.utils.aoa_to_sheet(excelRows);
             ws['!cols'] = [{wch: 15}, {wch: 12}, {wch: 15}, {wch: 30}, {wch: 25}, {wch: 18}, {wch: 30}, {wch: 12}, {wch: 12}, {wch: 30}];
-            XcontentUtils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
+            // แก้บั๊กพิมพ์ผิดเรียบร้อยครับ
+            XLSX.utils.book_append_sheet(wb, ws, "รายงานฝาก-เบิกคลัง");
             XLSX.writeFile(wb, `THAIFEX_StockReport_${new Date().getTime()}.xlsx`);
         }
 
